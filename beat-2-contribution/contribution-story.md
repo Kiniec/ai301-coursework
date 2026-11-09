@@ -8,9 +8,8 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
+**Student:** Mar Kiniec Carlisle
+**GitHub Username:** Kiniec
 **Issue:** [GitHub issue link]
 **Pull Request:** [GitHub PR link, once opened]
 
@@ -55,10 +54,12 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built issue-scout with my own search strategy and rubric**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+<!-- [2-4 sentences: what you built (the scout, your strategy), what broke -->
+<!-- or fell short, what changed because of it.] -->
+
+ This week I built issue-scout's search strategy and rubric. The strategy runs six gh search issues queries (good first issue, open, unassigned, recently updated, in Python, JavaScript, Java and TypeScript, plus a docs query), then ranks the results by fewest comments and caps grading at the top 5. Running it hit GitHub's secondary rate limit (HTTP 403) and had to be paced, and the first scan's top 5 had 3 issues from one repo, with brand-new owner-filed issues favored by the "fewest comments" ordering. Grading two hand-picked issues also showed that an umbrella issue (blazingmq#87) can be accepted because issue_scope_small is only preferred, so I would make scope required and cap issues per repo.
 
 **Unit 6: [one line on the tool work]**
 
