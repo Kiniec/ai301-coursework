@@ -10,7 +10,7 @@ files and no evidence uploads are part of Assignment 5.
 **Contribution Number:** [1]
 **Student:** Mar Kiniec Carlisle
 **GitHub Username:** Kiniec
-**Issue:** <https://github.com/ChurchCRM/CRM/issues/202>
+**Issue:** <https://github.com/ChurchCRM/docs.churchcrm.io/issues/202>
 **Pull Request:** <https://github.com/ChurchCRM/docs.churchcrm.io/pull/226>
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -61,15 +61,19 @@ one in the week it belongs to.
 
 This week I wrote the upstream rules for my voice guide and installed the voice guard hook, which now reads every comment before it goes out. It stopped an early claim draft for having no rough window, and once refused to post because it looked for my draft in the wrong folder. The bigger snag was in repro-check, where my rubric said a claim should promise no timeline while my voice guide said it needs a rough window, so I loosened the rubric to allow a window and still rule out dated deadlines. I also wrote a local memory file for the ChurchCRM docs repo, keeping only the rules I could get wrong, like opening the PR against main with the Current milestone and never committing screenshots, and pointing to the repo's own guides for the rest.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Built a ship manifest and got my branch through the ship-gate**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+The manifest lists the four checks from the repo's CI and skips the release gate
+with a dated reason. The gate first rejected my branch because my description and
+plan said both pages mention the event-type limit when only one does. I fixed
+both to match the diff, used my real title, and the final run passed.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Wrote a playbook from this repo's merge times and ran the PR monitor**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+My playbook says to nudge after seven quiet days, based on how fast other
+outside contributors' PRs got merged. The monitor read CodeRabbit's review and
+drafted one reply. I checked both points against the source, fixed them, and
+rewrote the reply myself with my real check output.
 
 ---
 
@@ -170,7 +174,7 @@ month, and Yearly. The Repeat Events editor is not documented. The API needs no 
 **Reproduction Evidence**
 
 - **Commit showing reproduction:** none
-- **Screenshots/logs:** [if applicable]
+- **Screenshots/logs:** none
 - **My findings:** 
   I reproduced part of the issue, and one part does not look like a gap.
   - **Ministry Calendar tab: reproduced.** The shipped dialog offers a "Monthly, on a weekday" choice (the issue's wording), but the page's Repeats row lists only Weekly, Monthly on a day of the month, and Yearly.
@@ -225,31 +229,41 @@ reproduction before and after, and ran the repo's own checks.
 **Toolkit**
 
 - Tool: the ship-gate, running my manifest's four checks on the branch.
-- What it produced: [verdict, once you run `check_gate.py`.]
+- What it produced: PASS. The gate ran my four manifest checks, and the final manual run passed on Nov 17, after three earlier rejections.
 - Difficulties: a half-finished `node_modules` made `npm run typecheck` print about 40 errors, all from a missing `@docusaurus/tsconfig`.
-- What changed: I reinstalled with `npm ci` (the repo's own lockfile), and thechecks passed.
+- What changed: I reinstalled with `npm ci` (the repo's own lockfile), and the checks passed.
 
 ---
 
 ## Implementation Notes
 
-[A running log, added to as you work. Date each entry. What you
-built, decisions you made when you made them, wrong turns included.]
+**2026-11-13**
 
-**[Date]**
+A maintainer moved the issue from ChurchCRM/CRM#10908 to the docs repo as #202, so
+I updated my links and my PR target.
 
-[Entry]
+**2026-11-16**
 
-**[Date]**
+I wrote the two doc edits, then found my copy was based on an old upstream commit.
+I re-cloned on current `main` and re-applied the edits from a saved patch. An
+incomplete install also broke `tsc` until I reinstalled with `npm ci`.
 
-[Entry]
+**2026-11-17**
+
+The ship-gate rejected my branch because my description and plan said both pages
+mention the event-type limit when only one does. I fixed that and the final run
+passed. I opened PR #226. CodeRabbit asked for two changes, which I checked,
+fixed, and pushed after rebasing onto a maintainer's merge of `main`.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code, running the edits, installs and checks, with git.
+- What it produced: the two doc edits, the checks, and the rebase and push.
+- Difficulties: a stale copy, a broken install, and a push rejected after the
+  maintainer's merge.
+- What changed: I re-cloned, used `npm ci`, and used a rebase instead of a force
+  push.
+
 
 ---
 
@@ -265,15 +279,19 @@ types cannot store this pattern as a default. Closes #202.
 
 **Maintainer Feedback:**
 
-- [Date]: not yet
-- [Date]: not yet
+- 2026-11-17: a maintainer merged `main` into my branch, with no comment.
+- 2026-11-17: I pulled it in with a rebase and pushed (`4e4cb94`).
+- 2026-11-17: CodeRabbit requested changes on two points in `events.md`: how to open
+  the editor, and which of the two "Every month on the" options to pick.
+- 2026-11-17: I checked both against the 7.8.3 source, fixed them, and replied on
+  the PR with my check output and a request for the Current milestone.
 
 **Status:** Awaiting review 
 
 **Toolkit**
 
 - Tool: the ship-gate and pr-precheck, with the voice guard on the description.
-- What it produced: [the gate's verdict on the final run.] Earlier runs rejected the description and plan for saying both pages note the event-type limit when only `events.md` does.
+- What it produced: PASS on the run that opened the PR (Nov 17, 00:51), after three rejections. Earlier runs rejected the description and plan for saying both pages note the event-type limit when only `events.md` does.
 - Difficulties: the voice guard stopped three times for summarizing check results instead of pasting them.
 - What changed: I corrected the description and plan to match the diff and pasted the real check output.
 
@@ -283,25 +301,28 @@ types cannot store this pattern as a default. Closes #202.
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I learned how this docs repo handles releases: a PR for something already released
+goes to `main` with the `Current` milestone. I also practiced rebasing after a
+rejected push and reading CI files to build a ship manifest.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+My first copy of the repo was out of date, and a broken install made the
+typecheck fail until I ran `npm ci`. The ship-gate also caught that my description
+said both pages mention the event-type limit when only one does.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I'd sync with upstream before I edit anything, and look up menu paths in the
+source before I write them.
+
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- The issue and the maintainer's reply, for which pages to edit and where the PR
+  goes: https://github.com/ChurchCRM/docs.churchcrm.io/issues/202
+- The feature PR, for the UI wording: https://github.com/ChurchCRM/CRM/pull/10907
+- The repo's docs guide, for workflow and voice: https://github.com/ChurchCRM/docs.churchcrm.io/blob/main/.agents/DOCS_GUIDE.md
+- The 7.8.3 source, where I checked CodeRabbit's two points: https://github.com/ChurchCRM/CRM/blob/7.8.3/src/event/views/repeat-editor.php
