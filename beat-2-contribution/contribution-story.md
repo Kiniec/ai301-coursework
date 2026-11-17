@@ -1,4 +1,4 @@
-# Contribution: Docs: recurring events on the Nth weekday of the month #10908
+# Contribution: Docs: recurring events on the Nth weekday of the month #202
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -10,7 +10,7 @@ files and no evidence uploads are part of Assignment 5.
 **Contribution Number:** [1]
 **Student:** Mar Kiniec Carlisle
 **GitHub Username:** Kiniec
-**Issue:** <https://github.com/ChurchCRM/CRM/issues/10908>
+**Issue:** <https://github.com/ChurchCRM/CRM/issues/202>
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -76,6 +76,9 @@ drafted, what you did with the draft.]
 ## Why I Chose This Issue
 
 I found this issue on the Issue Selection site and graded it, along with a few other picks, with my scout. Most of the others fell apart on a closer look because they were already claimed, were umbrella issues, or lived in C# repos. ChurchCRM issue #10908 came out as accept with a moderate difficulty note. It asks for one clear thing, updating the docs for the new "Nth weekday of the month" recurring event pattern, and the code behind it already shipped in 7.8.3. It fits me because it's small and documentation-adjacent with no application code, and I hope to learn how to follow an unfamiliar project's rules, here a separate docs repo with a release-milestone workflow. I claimed it here: https://github.com/ChurchCRM/CRM/issues/10908#issuecomment-6786399202. The scout held up only after patching, since it first accepted an umbrella issue, missed claim comments, and never told me the docs live in a different repo.
+
+I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to the docs repo, where it is now ChurchCRM/docs.churchcrm.io#202, so my PR goes there against main with the Current milestone.
+
 **Toolkit**
 
 - Tool: issue-scout, with my own search strategy and rubric, run once as a scan and then in direct mode on picks from the Issue Selection site.
