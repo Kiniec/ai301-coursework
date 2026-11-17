@@ -17,12 +17,8 @@ wrong label is not graded.
 
 https://github.com/codepath/pathreview-ai301-fa26-s3/issues/72
 
-[The individual Path Review issue page. A link to the repository or the issue list
-does not satisfy this field.]
 
 **Verdict output**
-
- [Your skill's live-mode output for this issue, pasted verbatim and ending with the fenced JSON verdict block. A summary does not satisfy this field.] 
 
 **The verdict must record `accept` for this issue.** Choose an issue your own skill
 accepts. If your skill rejects every candidate you try, that is a signal about your
@@ -53,10 +49,6 @@ Quote source text directly in each field below. Paraphrase does not satisfy them
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
-
 1st run - 17/20 \
 2nd run - 12/20 \
 3rd run - 14/20 \
@@ -67,23 +59,20 @@ only one run occurred. **The last score in your list must match the agreement li
 
 **Issue analysis**
 
-[One scored issue, identified by id (`issue-01` through `issue-20`; the `calib-`
-issues are not scored). State your rubric's decision, the gold label, and the
-reasoning that produced your rubric's result.]
-
 One scored was issue-01. The rubric's decision was accept, gold label as accept, the reasoning the rubric produced the result was it is an active repo as well as unclaimed.
 
 **Check rationale**
 
-[One check from the `rubric.md` uploaded to `tools/issue-select/`, quoted as it is
-currently written, with the reasoning behind its current form.]
+`not_claimed` (required). Pass condition: "No linked open PR (unchanged), AND no
+assignee, AND no claim comment ("I'll take this", "can I work on this", "working
+on this") posted within the last 60 days that the claimant did not later withdraw.
+A claim a maintainer answered counts as active at any age."
+
+My first version only checked for a linked open PR, so it passed issues that were
+already assigned or claimed in a comment. I added assignees and claim comments,
+and a 60-day window so an abandoned claim does not block an issue.
 
 **Trade-offs**
-
-[What the quoted check gives up. Any one of these is a complete answer: an issue whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
 
 After running a canary with Issue-06, it required a change because of the contributing md. Changing  was the only way it would pass the test.
 
@@ -97,12 +86,12 @@ This is also the basis for the claim comment you write in Unit 2.
 
 **Selection rationale**
 
-[Answer all three:
-
-1. The issue's of fixing a bug and an api fits my interests and to the time available.
-2. The verdict weighed everything accordingly.
-3. The anticipated difficulty and challenge,  I believe,  will be the api portion of the issue. 
-
+1. Issue #72 is a small bug fix in `core/security.py` and
+   `tests/unit/test_security.py`, estimated at 1-2 hours, which fits my time.
+   The issue matches my interest for backend development.
+2. All five checks passed: last commit 2026-09-16, repo not archived, scope named
+   two files, no linked open PR, and no AI restriction in `docs/CONTRIBUTING.md`.
+3. I expect the hardest part to be utilizing Claude Code to find the issue.
 ---
 
 Related paths: `eval-run.txt` in this directory; your skill's files in
