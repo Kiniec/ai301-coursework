@@ -11,7 +11,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Mar Kiniec Carlisle
 **GitHub Username:** Kiniec
 **Issue:** <https://github.com/ChurchCRM/CRM/issues/202>
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:** <https://github.com/ChurchCRM/docs.churchcrm.io/pull/226>
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that is far easier to write down as it happens than to reconstruct in the last weekend.
@@ -192,9 +192,7 @@ month, and Yearly. The Repeat Events editor is not documented. The API needs no 
 
 **Analysis**
 
-The feature shipped in 7.8.3, but two docs pages never caught up. The Repeats row in `docs/user-guide/ministries/events-and-calendar.md` omits "Monthly, on a weekday", and the Repeat Events editor is not documented in
-`docs/user-guide/events.md`, so that part needs new text. The API needs no
-change, because its reference is generated from the release's OpenAPI specs.
+The feature shipped in 7.8.3, but two docs pages never caught up. The Repeats row in `docs/user-guide/ministries/events-and-calendar.md` omits "Monthly, on a weekday", and the Repeat Events editor is not documented in `docs/user-guide/events.md`, so that part needs new text. The API needs no change, because its reference is generated from the release's OpenAPI specs.
 
 **Proposed Solution**
 
@@ -222,15 +220,14 @@ This is a docs-only change, so there is no test that fails without it. I re-ran 
 reproduction before and after, and ran the repo's own checks.
 
 - `grep -rniE 'monthly-weekday|nth weekday|RecurWOM|on a weekday|every month on the' docs/user-guide` prints nothing on unchanged `origin/main` and four lines on my branch (the Repeats row and the new section).
-- `npm run typecheck`, `BASE_REF=main node scripts/check-visuals.mjs` and
-`npm run build` pass, after `npm ci` and `npm run regen`.
+- `npm run typecheck`, `BASE_REF=main node scripts/check-visuals.mjs` and `npm run build` pass, after `npm ci` and `npm run regen`.
 
 **Toolkit**
 
 - Tool: the ship-gate, running my manifest's four checks on the branch.
 - What it produced: [verdict, once you run `check_gate.py`.]
 - Difficulties: a half-finished `node_modules` made `npm run typecheck` print about 40 errors, all from a missing `@docusaurus/tsconfig`.
-- What changed: I reinstalled with `npm ci` (the repo's own lockfile), and the checks passed.
+- What changed: I reinstalled with `npm ci` (the repo's own lockfile), and thechecks passed.
 
 ---
 
@@ -258,27 +255,27 @@ built, decisions you made when you made them, wrong turns included.]
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** <https://github.com/ChurchCRM/docs.churchcrm.io/pull/226>
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** Documents the Nth weekday of the month recurrence pattern that
+shipped in 7.8.3. The Repeats row on the Ministry Calendar page now lists Monthly,
+on a weekday, and `events.md` has a new section on the Repeat Events editor. Both
+say a month with no 5th such weekday gets no event, and `events.md` adds that event
+types cannot store this pattern as a default. Closes #202.
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- [Date]: not yet
+- [Date]: not yet
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Awaiting review 
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate and pr-precheck, with the voice guard on the description.
+- What it produced: [the gate's verdict on the final run.] Earlier runs rejected the description and plan for saying both pages note the event-type limit when only `events.md` does.
+- Difficulties: the voice guard stopped three times for summarizing check results instead of pasting them.
+- What changed: I corrected the description and plan to match the diff and pasted the real check output.
 
 ---
 
