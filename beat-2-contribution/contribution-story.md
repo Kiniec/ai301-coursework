@@ -218,17 +218,19 @@ One docs-only PR against `main`, milestone `Current`, editing those two files. B
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+This is a docs-only change, so there is no test that fails without it. I re-ran my
+reproduction before and after, and ran the repo's own checks.
+
+- `grep -rniE 'monthly-weekday|nth weekday|RecurWOM|on a weekday|every month on the' docs/user-guide` prints nothing on unchanged `origin/main` and four lines on my branch (the Repeats row and the new section).
+- `npm run typecheck`, `BASE_REF=main node scripts/check-visuals.mjs` and
+`npm run build` pass, after `npm ci` and `npm run regen`.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the ship-gate, running my manifest's four checks on the branch.
+- What it produced: [verdict, once you run `check_gate.py`.]
+- Difficulties: a half-finished `node_modules` made `npm run typecheck` print about 40 errors, all from a missing `@docusaurus/tsconfig`.
+- What changed: I reinstalled with `npm ci` (the repo's own lockfile), and the checks passed.
 
 ---
 
