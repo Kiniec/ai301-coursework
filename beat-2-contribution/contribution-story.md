@@ -93,26 +93,30 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+ChurchCRM 7.8.3 added a recurring-event pattern, "Nth weekday of the month"
+(for example, every 2nd Tuesday), but the user docs never mention it.
 
 **Expected Behavior**
 
-[What should happen?]
+The docs cover the pattern on the Ministry Calendar page and in the Repeat Events editor. They say a month with no 5th such weekday gets no event, and that event types cannot store this pattern as a default.
 
 **Current Behavior**
 
-[What actually happens?]
+The Ministry Calendar Repeats row lists only Weekly, Monthly on a day of the
+month, and Yearly. The Repeat Events editor is not documented. The API needs no change, because its reference is generated from the release's OpenAPI specs.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+`docs/user-guide/ministries/events-and-calendar.md` and
+`docs/user-guide/events.md`. No application code.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude Code, reading the issue with `gh api` and the merged PR #10907.
+- What it produced: the issue split into four items, plus the maintainer's
+  answers on targeting (PR against `main`, milestone `Current`).
+- Difficulties: `gh issue view` failed on a retired Projects (classic) GraphQL field, and the issue moved from ChurchCRM/CRM#10908 to the docs repo as #202.
+- What changed: I used `gh api` instead and updated the story to the new issue.
 
 ---
 
@@ -121,9 +125,11 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
 **Environment Setup**
 
 - OS: macOS 27.0.1, arm64
-- Tools: git 2.50.0, curl, gh CLI (Node v25.2.1 is installed but I did not build the site)
-- Docs repo: `ChurchCRM/docs.churchcrm.io`, shallow clone of `main` at commit `296ac7821c64475380cc32aad6f2a7f3616bad3c` (2026-11-10)
-- Docs pin: `crm-release.json` says `{"version": "7.8.3"}`, the same release the issue's feature (PR #10907) shipped in
+- Tools: git 2.50.0, curl, gh CLI, Node v25.2.1, npm 11.6.2
+- Build: after the first reproduction (a read-only check, no build), I installed the site with `npm ci`, generated the API docs with `npm run regen`, and ran `npm run typecheck`, `node scripts/check-visuals.mjs` and `npm run build`. All passed on my branch.
+- Docs repo: `ChurchCRM/docs.churchcrm.io`. I first reproduced on a shallow clone of `main` at commit `296ac7821c64475380cc32aad6f2a7f3616bad3c` (2026-11-10), then re-cloned my fork on current upstream `main`, commit `a52b116cd061a0d52d91fe57b7d36f00bdb7ee98` (2026-11-16), and confirmed the same gap is still there.
+- Docs pin: `crm-release.json` now says `{"version": "7.8.4"}` (it said 7.8.3 at the first commit). The feature (PR #10907) shipped in 7.8.3, so it is in 7.8.4 as well.
+
 - ChurchCRM source: tag `7.8.3`
 
 **Steps to Reproduce**
@@ -145,7 +151,7 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
 3. Read what the Ministry Calendar tab page says about the Repeats choices.
 
    ```
-   sed -n '50p' docs/user-guide/ministries/events-and-calendar.md
+   grep -n '| \*\*Repeats' docs/user-guide/ministries/events-and-calendar.md
    ```
 
 4. Check whether the Repeat Events editor is documented.
@@ -161,7 +167,6 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
    curl -fsSL https://raw.githubusercontent.com/ChurchCRM/CRM/7.8.3/docs/openapi/generated/private-api.yaml | grep -nE 'monthly-weekday|RecurWOM'
    ```
 
-
 **Reproduction Evidence**
 
 - **Commit showing reproduction:** none
@@ -175,10 +180,11 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: the voice guard hook with my `voice-guide.md`, which checks each outgoing `gh` comment against my rules. The reproduction itself used `git`, `grep`, `curl` and `gh` through Claude Code.
+- What it produced: two stops on my claim draft, quoting the rule that a claim names one concrete first step and a rough window. It passed on the third check.
+- Difficulties: the hook once could not find my body file, and my reproduction went stale when upstream moved (the Repeats row shifted from line 50 to 49).
+- What changed: I fixed the claim and the file path, and changed step 3 to `grep -n '| \*\*Repeats'` so it does not depend on a line number.
+
 
 ---
 
@@ -186,29 +192,27 @@ I claimed this as ChurchCRM/CRM#10908, and a maintainer later transferred it to 
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+The feature shipped in 7.8.3, but two docs pages never caught up. The Repeats row in `docs/user-guide/ministries/events-and-calendar.md` omits "Monthly, on a weekday", and the Repeat Events editor is not documented in
+`docs/user-guide/events.md`, so that part needs new text. The API needs no
+change, because its reference is generated from the release's OpenAPI specs.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+One docs-only PR against `main`, milestone `Current`, editing those two files. Both changes say that a month with no 5th such weekday gets no event, and that event types cannot store this pattern as a default. I am not touching the API pages, screenshots, config, or the unconfirmed Event Types section.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
-
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+1. Branch `docs/nth-weekday-recurrence` from current upstream `main`.
+2. Edit the Repeats row, and add a short section to `events.md`.
+3. Test: `grep -rniE 'monthly-weekday|nth weekday|RecurWOM|on a weekday every month on the' docs/user-guide` prints nothing on `origin/main` and four lines on my branch. Then `npm run typecheck`, `BASE_REF=main node scripts/check-visuals.mjs` and `npm run build` must pass.
+4. Open the PR with `Closes #202`, linking CRM#10906 and CRM#10907.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: plan-check, grading `plan.md` and my draft plan comment for issue #202.
+- What it produced: reject. Scope passed, but it marked my diagnosis unclear (no repro output quoted) and failed my test plan (no command or before/after result).
+- Difficulties: my grep searched all of `docs/`, which matches generated API pages after `npm run regen`.
+- What changed: I narrowed it to `docs/user-guide`, gave step 3 the exact grep with its before and after results, and quoted the grep in the comment.
 
 ---
 
