@@ -42,8 +42,27 @@ description_matches_diff [fail]: Description says both files state that event ty
 Gate final run, Nov 17 00:51: verdict PASS
 (all four manifest checks and all seven pr-precheck checks)
 
+Failed run, Nov 17, 00:16 (manual), verdict: BLOCK
+- manifest checks: all four ok (install/regen 36s, typecheck 1s, visuals 0s, build 74s)
+- pr-precheck checks:
+  - diff_matches_plan [fail]: Plan says both changes state that event types cannot store this
+    pattern; the Repeats row in events-and-calendar.md does not, and no Deviations entry covers it.
+  - description_matches_diff [pass]
+  - repro_before_after [pass]: Same grep: no output on main (a52b116), 4 lines on the branch
+  - title_and_branch [fail]: Draft title is still the placeholder '<your PR title>' (preferred only)
+
+Passing run, Nov 17, 00:26 (manual), verdict: PASS
+- manifest checks: all four ok (install/regen 39s, typecheck 2s, visuals 0s, build 92s)
+- pr-precheck checks:
+  - diff_matches_plan [pass]: Diff touches only events.md and events-and-calendar.md, the two files
+    plan.md names; Repeats row and new section both carry the 5th-weekday note.
+  - description_matches_diff [pass]
+  - repro_before_after [pass]: before 'no output' on a52b116, after '4 lines'
+  - title_and_branch [fail]: draft title is the placeholder (preferred, no verdict effect)
+
 ```
-The next run passed after I fixed the description and plan.
+The passing came after two rounds of fixes. The gate rejected for the same mistake in description and plan
+
 ### The review
 
 After I submitted the PR, CodeRabbit suggested two improvements: explain how users open the Repeat Events editor and clarify the difference between the two "Every month on the" options. Instead of just accepting the comments, I checked the source code myself and confirmed that both options use the same label, which could easily confuse users. I updated the documentation to make that distinction clearer.
